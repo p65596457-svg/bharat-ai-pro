@@ -3,7 +3,7 @@ from groq import Groq
 from PIL import Image
 import os
 from datetime import datetime
-import calendar
+import requests
 
 st.set_page_config(page_title="BHARAT AI - PRO MAX", page_icon="🇮🇳", layout="wide")
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
@@ -27,7 +27,7 @@ st.components.v1.html("""
 <script>function u(){const n=new Date();document.getElementById('t').innerHTML='⏰ '+n.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+' IST - LIVE'}setInterval(u,1000);u();</script>
 """, height=40)
 
-tab1, tab2, tab3 = st.tabs(["💬 Chat", "📰 News", "📝 Notes"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["💬 Chat", "📰 News", "📝 Notes", "🎤 Voice", "🖼️ Image Gen"])
 
 with tab1:
     if st.button("🗑️ Clear Chat"):
@@ -43,7 +43,7 @@ with tab1:
             resp = client.chat.completions.create(
                 model="openai/gpt-oss-20b",
                 messages=[
-                    {"role":"system","content":f"You are BHARAT AI PRO MAX by PRINCE. Today is {now.strftime('%d %B %Y %A %I:%M %p IST')}. Answer anything: News, Notes, Date, Time."},
+                    {"role":"system","content":f"You are BHARAT AI PRO MAX by PRINCE. Today is {now.strftime('%d %B %Y %A %I:%M %p IST')}. Answer in Hinglish."},
                     {"role":"user","content":prompt}
                 ],
             )
@@ -53,14 +53,16 @@ with tab1:
 
 with tab2:
     st.subheader("📰 Taaza News")
-    q = st.text_input("Konsi news?", "India latest news")
+    q = st.text_input("Konsi news?", "India latest news", key="n1")
     if st.button("News Lao"):
-        r = client.chat.completions.create(model="openai/gpt-oss-20b", messages=[{"role":"user","content":f"Latest news about {q} today {now.strftime('%d %B %Y')}"}])
+        r = client.chat.completions.create(model="openai/gpt-oss-20b", messages=[{"role":"user","content":f"Latest news about {q} today {now.strftime('%d %B %Y')}. Give 7 points in Hinglish"}])
         st.markdown(r.choices[0].message.content)
 
 with tab3:
     st.subheader("📝 Notes Maker")
-    topic = st.text_input("Topic?")
+    topic = st.text_input("Topic?", key="n2")
     if st.button("Notes Banao"):
-        r = client.chat.completions.create(model="openai/gpt-oss-20b", messages=[{"role":"user","content":f"Make notes on {topic}"}])
+        r = client.chat.completions.create(model="openai/gpt-oss-20b", messages=[{"role":"user","content":f"Make detailed notes on {topic} in Hinglish with emojis"}])
         st.markdown(r.choices[0].message.content)
+
+with
