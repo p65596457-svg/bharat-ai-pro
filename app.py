@@ -33,7 +33,7 @@ for m in st.session_state.messages:
 if prompt := st.chat_input("Kuch bhi puchho..."):
     st.session_state.messages.append({"role":"user","content":prompt})
     with st.chat_message("user"): st.markdown(prompt)
-    resp = client.chat.completions.create(model="llama3-8b-8192", messages=[{"role":"user","content":prompt}])
+    resp = client.chat.completions.create(model="llama-3.1-8b-instant", messages=[{"role":"user","content":prompt}])
     ans = resp.choices[0].message.content
     with st.chat_message("assistant"): st.markdown(ans)
     st.session_state.messages.append({"role":"assistant","content":ans})
