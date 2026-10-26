@@ -3,7 +3,6 @@ from groq import Groq
 from PIL import Image
 import os
 from datetime import datetime
-import pytz
 import calendar
 
 st.set_page_config(page_title="BHARAT AI - PRO MAX", page_icon="🇮🇳", layout="wide")
