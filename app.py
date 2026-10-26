@@ -35,17 +35,23 @@ setInterval(u,1000);u();
 </script>
 """, height=40)
 
+# FIX: messages ko sabse pehle init karo
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 tab1, tab2, tab3, tab4 = st.tabs(["💬 Chat", "📰 News", "📝 Notes", "🎤 Voice"])
 
 with tab1:
-    if st.button("Clear Chat"):
-        st.session_state.messages=[]
-        st.rerun()
-    if "messages" not in st.session_state: 
-        st.session_state.messages=[]
+    col1, col2 = st.columns([4,1])
+    with col2:
+        if st.button("🗑️ Clear Chat", key="clear_btn", use_container_width=True):
+            st.session_state.messages = []
+            st.rerun()
+
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): 
             st.markdown(m["content"])
+            
     if prompt := st.chat_input("Kuch bhi puchho..."):
         st.session_state.messages.append({"role":"user","content":prompt})
         with st.chat_message("user"): 
