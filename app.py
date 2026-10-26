@@ -13,7 +13,6 @@ for f in ["BHARAT AI (2).png", "BHARAT AI.png", "logo.png"]:
         logo = Image.open(f)
         break
 
-# BILKUL CENTRE LOGO
 if logo:
     _, mid, _ = st.columns([1,1,1])
     with mid:
@@ -27,13 +26,24 @@ if st.button("🗑️ Clear Chat", use_container_width=True):
 st.divider()
 
 if "messages" not in st.session_state: st.session_state.messages=[]
+
 for m in st.session_state.messages:
     with st.chat_message(m["role"]): st.markdown(m["content"])
 
 if prompt := st.chat_input("Kuch bhi puchho..."):
     st.session_state.messages.append({"role":"user","content":prompt})
     with st.chat_message("user"): st.markdown(prompt)
-    resp = client.chat.completions.create(model="llama-3.1-8b-instant", messages=[{"role":"user","content":prompt}])
-    ans = resp.choices[0].message.content
-    with st.chat_message("assistant"): st.markdown(ans)
-    st.session_state.messages.append({"role":"assistant","content":ans})
+    with st.chat_message("assistant"):
+        try:
+            resp = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[
+                    {"role":"system","content":"You are BHARAT AI - PRO MAX by PRINCE, FS University. Helpful, powerful."},
+                    {"role":"user","content":prompt}
+                ]
+            )
+            ans = resp.choices[0].message.content
+            st.markdown(ans)
+            st.session_state.messages.append({"role":"assistant","content":ans})
+        except Exception as e:
+            st.error(f"Error: {e}")
